@@ -370,7 +370,7 @@ impl Window {
         self.set_fullscreen(self.window.fullscreen().is_none());
     }
 
-    /// Toggle the window's fullscreen state.
+    /// Increase the window size
     pub fn increase_window_size(&self) {
         let factor = 1.1;
         let mut size = self.inner_size();
