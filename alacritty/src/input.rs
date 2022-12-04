@@ -83,6 +83,7 @@ pub trait ActionContext<T: EventListener> {
     fn spawn_new_instance(&mut self) {}
     fn create_new_window(&mut self) {}
     fn change_font_size(&mut self, _delta: f32) {}
+    fn scale_font_size(&mut self, _factor: f32) {}
     fn reset_font_size(&mut self) {}
     fn pop_message(&mut self) {}
     fn message(&self) -> Option<&Message>;
@@ -271,6 +272,16 @@ impl<T: EventListener> Execute<T> for Action {
                 ctx.paste(&text);
             },
             Action::ToggleFullscreen => ctx.window().toggle_fullscreen(),
+            Action::IncreaseWindowSize => {
+                let scaling_factor = ctx.config().window.scaling_factor();
+                ctx.window().scale_window_size(scaling_factor);
+                ctx.scale_font_size(scaling_factor);
+            },
+            Action::DecreaseWindowSize => {
+                let scaling_factor = ctx.config().window.scaling_factor();
+                ctx.window().scale_window_size(1. / scaling_factor);
+                ctx.scale_font_size(1. / scaling_factor);
+            },
             Action::ToggleMaximized => ctx.window().toggle_maximized(),
             #[cfg(target_os = "macos")]
             Action::ToggleSimpleFullscreen => ctx.window().toggle_simple_fullscreen(),

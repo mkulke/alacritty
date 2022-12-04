@@ -431,6 +431,12 @@ impl<'a, N: Notify + 'a, T: EventListener> input::ActionContext<T> for ActionCon
         }
     }
 
+    fn scale_font_size(&mut self, factor: f32) {
+        *self.font_size = Size::new(self.font_size.as_f32_pts() * factor);
+        let font = self.config.font.clone().with_size(*self.font_size);
+        self.display.pending_update.set_font(font);
+    }
+
     fn change_font_size(&mut self, delta: f32) {
         *self.font_size = max(*self.font_size + delta, Size::new(FONT_SIZE_STEP));
         let font = self.config.font.clone().with_size(*self.font_size);
@@ -1085,16 +1091,16 @@ impl input::Processor<EventProxy, ActionContext<'_, Notifier, EventProxy>> {
         match event {
             WinitEvent::UserEvent(Event { payload, .. }) => match payload {
                 EventType::ScaleFactorChanged(scale_factor, (width, height)) => {
+                    self.ctx.window().scale_factor = scale_factor;
                     let display_update_pending = &mut self.ctx.display.pending_update;
 
                     // Push current font to update its scale factor.
                     let font = self.ctx.config.font.clone();
                     display_update_pending.set_font(font.with_size(*self.ctx.font_size));
-
-                    // Resize to event's dimensions, since no resize event is emitted on Wayland.
+                    if width == 0 || height == 0 {
+                        return;
+                    }
                     display_update_pending.set_dimensions(PhysicalSize::new(width, height));
-
-                    self.ctx.window().scale_factor = scale_factor;
                 },
                 EventType::SearchNext => self.ctx.goto_match(None),
                 EventType::Scroll(scroll) => self.ctx.scroll(scroll),

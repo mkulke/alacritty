@@ -34,6 +34,14 @@
   #  columns: 0
   #  lines: 0
 
+  # Scale Factor
+  #
+  # Factor to apply when increase/decrease the window via the
+  # {In,De}creaseWindowSize Action. Values will be clipped to the range of 1.1
+  # to 1.5.
+  #
+  #scaling_factor: 1.1
+
   # Window position (changes require restart)
   #
   # Specified in number of pixels.
