@@ -189,6 +189,9 @@ pub enum Action {
     /// IncreaseWindowSize
     IncreaseWindowSize,
 
+    /// DecreaseWindowSize
+    DecreaseWindowSize,
+
     /// Toggle maximized.
     ToggleMaximized,
 

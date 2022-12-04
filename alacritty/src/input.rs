@@ -42,6 +42,9 @@ use crate::scheduler::{Scheduler, TimerId, Topic};
 /// Font size change interval.
 pub const FONT_SIZE_STEP: f32 = 0.5;
 
+/// Window scale factor.
+pub const WINDOW_SCALE_FACTOR: f32 = 1.1;
+
 /// Interval for mouse scrolling during selection outside of the boundaries.
 const SELECTION_SCROLLING_INTERVAL: Duration = Duration::from_millis(15);
 
@@ -273,8 +276,12 @@ impl<T: EventListener> Execute<T> for Action {
             },
             Action::ToggleFullscreen => ctx.window().toggle_fullscreen(),
             Action::IncreaseWindowSize => {
-                ctx.window().increase_window_size();
-                ctx.scale_font_size(1.1);
+                ctx.window().scale_window_size(WINDOW_SCALE_FACTOR);
+                ctx.scale_font_size(WINDOW_SCALE_FACTOR);
+            },
+            Action::DecreaseWindowSize => {
+                ctx.window().scale_window_size(1. / WINDOW_SCALE_FACTOR);
+                ctx.scale_font_size(1. / WINDOW_SCALE_FACTOR);
             },
             Action::ToggleMaximized => ctx.window().toggle_maximized(),
             #[cfg(target_os = "macos")]
