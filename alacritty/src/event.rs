@@ -431,6 +431,12 @@ impl<'a, N: Notify + 'a, T: EventListener> input::ActionContext<T> for ActionCon
         }
     }
 
+    fn scale_font_size(&mut self, factor: f32) {
+        *self.font_size = Size::new(self.font_size.as_f32_pts() * factor);
+        let font = self.config.font.clone().with_size(*self.font_size);
+        self.display.pending_update.set_font(font);
+    }
+
     fn change_font_size(&mut self, delta: f32) {
         *self.font_size = max(*self.font_size + delta, Size::new(FONT_SIZE_STEP));
         let font = self.config.font.clone().with_size(*self.font_size);
