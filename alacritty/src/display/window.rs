@@ -370,6 +370,13 @@ impl Window {
         self.set_fullscreen(self.window.fullscreen().is_none());
     }
 
+    /// Toggle the window's fullscreen state.
+    pub fn increase_window_size(&self) {
+        let mut size = self.inner_size();
+        size.width += 100;
+        self.window.set_inner_size(size);
+    }
+
     /// Toggle the window's maximized state.
     pub fn toggle_maximized(&self) {
         self.set_maximized(!self.window.is_maximized());
