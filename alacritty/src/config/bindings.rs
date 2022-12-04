@@ -186,6 +186,9 @@ pub enum Action {
     /// Toggle fullscreen.
     ToggleFullscreen,
 
+    /// IncreaseWindowSize
+    IncreaseWindowSize,
+
     /// Toggle maximized.
     ToggleMaximized,
 
