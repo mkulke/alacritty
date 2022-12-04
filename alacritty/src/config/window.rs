@@ -7,7 +7,7 @@ use serde::de::{self, MapAccess, Visitor};
 use serde::{Deserialize, Deserializer, Serialize};
 
 use alacritty_config_derive::{ConfigDeserialize, SerdeReplace};
-use alacritty_terminal::config::{Percentage, LOG_TARGET_CONFIG};
+use alacritty_terminal::config::{Percentage, ScalingFactor, LOG_TARGET_CONFIG};
 use alacritty_terminal::index::Column;
 
 use crate::config::ui_config::Delta;
@@ -57,6 +57,9 @@ pub struct WindowConfig {
 
     /// Initial dimensions.
     dimensions: Dimensions,
+
+    /// Scaling factor
+    scaling_factor: ScalingFactor,
 }
 
 impl Default for WindowConfig {
@@ -74,6 +77,7 @@ impl Default for WindowConfig {
             opacity: Default::default(),
             padding: Default::default(),
             dimensions: Default::default(),
+            scaling_factor: Default::default(),
         }
     }
 }
@@ -139,6 +143,11 @@ impl WindowConfig {
     #[inline]
     pub fn maximized(&self) -> bool {
         self.startup_mode == StartupMode::Maximized
+    }
+
+    #[inline]
+    pub fn scaling_factor(&self) -> f32 {
+        self.scaling_factor.as_f32()
     }
 }
 

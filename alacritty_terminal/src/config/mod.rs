@@ -222,6 +222,26 @@ impl Program {
     }
 }
 
+/// Wrapper around f32 that represents a scaling factor value between 1.1 and 1.5.
+#[derive(SerdeReplace, Deserialize, Clone, Copy, Debug, PartialEq)]
+pub struct ScalingFactor(f32);
+
+impl Default for ScalingFactor {
+    fn default() -> Self {
+        ScalingFactor(1.1)
+    }
+}
+
+impl ScalingFactor {
+    pub fn new(value: f32) -> Self {
+        ScalingFactor(value.clamp(1.1, 1.5))
+    }
+
+    pub fn as_f32(self) -> f32 {
+        self.0
+    }
+}
+
 /// Wrapper around f32 that represents a percentage value between 0.0 and 1.0.
 #[derive(SerdeReplace, Deserialize, Clone, Copy, Debug, PartialEq)]
 pub struct Percentage(f32);
