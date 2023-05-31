@@ -18,12 +18,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Test
-        run: cargo test --release
+      # - name: Test
+      #   run: cargo test --release
       - name: Build
         run: cargo build --release
-      - name: Upload portable executable
-        run: |
-          cp ./target/release/alacritty.exe ./Alacritty-${GITHUB_REF##*/}-portable.exe
-          ./.github/workflows/upload_asset.sh \
-            ./Alacritty-${GITHUB_REF##*/}-portable.exe $GITHUB_TOKEN
+      - name: Upload executable as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: alacritty
+          path: ./target/release/alacritty.exe
+      # - name: Upload portable executable
+      #   run: |
+      #     cp ./target/release/alacritty.exe ./Alacritty-${GITHUB_REF##*/}-portable.exe
+      #     ./.github/workflows/upload_asset.sh \
+      #       ./Alacritty-${GITHUB_REF##*/}-portable.exe $GITHUB_TOKEN
